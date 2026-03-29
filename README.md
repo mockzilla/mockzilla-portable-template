@@ -8,7 +8,7 @@ Place your OpenAPI specs in `openapi/` and static responses in `static/`, build 
 
 1. Click [**Use this template**](https://github.com/mockzilla/connexions-portable-template/generate) to create your own repository
 2. Add your OpenAPI specs to `openapi/` and/or static responses to `static/`
-3. Push to main - binaries are built automatically via GitHub Actions
+3. Push to main - binaries for Linux, macOS, and Windows are built automatically and published to **Releases**
 
 ## OpenAPI specs
 
