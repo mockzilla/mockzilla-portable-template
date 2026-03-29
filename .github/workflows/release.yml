@@ -4,6 +4,9 @@ on:
   push:
     branches: [main, master]
 
+env:
+  BINARY_NAME: ${{ github.event.repository.name }}
+
 permissions:
   contents: write
 
@@ -40,12 +43,12 @@ jobs:
         run: |
           ext=""
           if [ "$GOOS" = "windows" ]; then ext=".exe"; fi
-          go build -o mock-server-${GOOS}-${GOARCH}${ext} .
+          go build -o ${BINARY_NAME}-${GOOS}-${GOARCH}${ext} .
 
       - uses: actions/upload-artifact@v4
         with:
-          name: mock-server-${{ matrix.goos }}-${{ matrix.goarch }}
-          path: mock-server-*
+          name: ${{ env.BINARY_NAME }}-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: ${{ env.BINARY_NAME }}-*
 
   release:
     needs: build
