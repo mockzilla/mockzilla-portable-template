@@ -6,24 +6,9 @@ Place your OpenAPI specs in `openapi/` and static responses in `static/`, build 
 
 ## Quick start
 
-1. Click **Use this template** on GitHub to create your own repository
+1. Click [**Use this template**](https://github.com/mockzilla/connexions-portable-template/generate) to create your own repository
 2. Add your OpenAPI specs to `openapi/` and/or static responses to `static/`
-3. Build and run:
-
-```sh
-go build -o mock-server .
-./mock-server
-```
-
-The server starts on port 2200 by default.
-
-## Flags
-
-```
---port PORT     Override server port (default: 2200)
---config PATH   Unified config YAML (app settings + per-service config)
---context PATH  Per-service context YAML for value replacements
-```
+3. Push to main - binaries are built automatically via GitHub Actions
 
 ## OpenAPI specs
 
