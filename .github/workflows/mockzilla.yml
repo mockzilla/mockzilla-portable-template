@@ -1,0 +1,21 @@
+name: Mockzilla
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: mockzilla/actions/portable@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
