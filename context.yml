@@ -1,0 +1,8 @@
+# context.yml for portable mode
+petstore:
+  status: ["success", "pending", "failed"]
+  payment_method: card
+
+spoonacular:
+  ingredient_id: [1, 2, 3]
+  unit: ["g", "kg", "ml"]
