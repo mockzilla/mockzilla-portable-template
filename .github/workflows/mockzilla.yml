@@ -13,7 +13,9 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.labels.*.name, 'Mockzilla')
+    if: >-
+      github.event_name == 'push' ||
+      contains(github.event.pull_request.labels.*.name, 'Mockzilla')
     steps:
       - uses: actions/checkout@v4
 
