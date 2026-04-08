@@ -60,8 +60,9 @@ You can customize the action in `.github/workflows/mockzilla.yml`:
   with:
     token: ${{ secrets.GITHUB_TOKEN }}
     region: us-east-1        # optional — preferred AWS region, used as a hint on first deploy only
-    memory: 128              # optional — memory in MB (e.g. 128, 256, 512)
-    timeout: 10000           # optional — request timeout in milliseconds
+    memory-size: 256         # optional — memory in MB (default: 128)
+    timeout: 60              # optional — request timeout in seconds
+    environment: '{"ENV":"production","DEBUG":"true"}'  # optional
     timeout-minutes: 5       # optional — max minutes to wait for simulation to become active (default: 5)
 ```
 
@@ -69,6 +70,7 @@ You can customize the action in `.github/workflows/mockzilla.yml`:
 |---|---|---|
 | `token` | yes | `GITHUB_TOKEN` — used to verify repo identity |
 | `region` | no | Preferred AWS region (e.g. `us-east-1`, `ap-southeast-1`). Used as a hint on first deploy — if at capacity, the nearest available region is used. Has no effect after the simulation is deployed. |
-| `memory` | no | Memory in megabytes (e.g. `128`, `256`, `512`). |
-| `timeout` | no | Request timeout for the simulation in milliseconds. |
+| `memory-size` | no | Memory in megabytes (e.g. `128`, `256`, `512`). Defaults to `128`. |
+| `timeout` | no | Request timeout for the simulation in seconds (e.g. `30`, `60`). |
+| `environment` | no | JSON object of environment variables to set in the simulation (e.g. `'{"ENV":"production"}'`). |
 | `timeout-minutes` | no | Max minutes the action polls for the simulation to become active. Defaults to `5`. |
