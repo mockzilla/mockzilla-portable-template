@@ -78,3 +78,11 @@ You can customize the action in `.github/workflows/mockzilla.yml`:
 | `spec-dir` | no | Directory containing OpenAPI specs. Defaults to `openapi`. |
 | `static-dir` | no | Directory containing static API responses. Defaults to `static`. |
 | `timeout-minutes` | no | Max minutes the action polls for the simulation to become active. Defaults to `5`. |
+
+### Check your simulation URL
+
+After pushing, your URL is deterministic:
+
+```bash
+echo "https://api.mockzilla.org/gh/$(gh repo view --json nameWithOwner -q .nameWithOwner)/$(git branch --show-current)/"
+```
