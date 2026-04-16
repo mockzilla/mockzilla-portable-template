@@ -2,7 +2,7 @@ module github.com/mockzilla/connexions-portable-template
 
 go 1.25.3
 
-require github.com/mockzilla/connexions/v2 v2.1.89
+require github.com/mockzilla/connexions/v2 v2.1.92
 
 require (
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
