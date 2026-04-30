@@ -2,7 +2,7 @@ module github.com/mockzilla/mockzilla-portable-template
 
 go 1.25.3
 
-require github.com/mockzilla/mockzilla/v2 v2.1.99
+require github.com/mockzilla/mockzilla/v2 v2.1.100
 
 require (
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
