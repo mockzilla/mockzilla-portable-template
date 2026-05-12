@@ -2,7 +2,7 @@ module github.com/mockzilla/mockzilla-portable-template
 
 go 1.25.3
 
-require github.com/mockzilla/mockzilla/v2 v2.3.0
+require github.com/mockzilla/mockzilla/v2 v2.4.0
 
 require (
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
@@ -10,7 +10,7 @@ require (
 	github.com/caarlos0/env/v11 v11.4.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
-	github.com/doordash-oss/oapi-codegen-dd/v3 v3.74.0 // indirect
+	github.com/doordash-oss/oapi-codegen-dd/v3 v3.75.2 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.13 // indirect
 	github.com/go-chi/chi/v5 v5.2.5 // indirect
@@ -27,10 +27,10 @@ require (
 	github.com/pb33f/ordered-map/v2 v2.3.0 // indirect
 	github.com/redis/go-redis/v9 v9.13.0 // indirect
 	go.yaml.in/yaml/v4 v4.0.0-rc.4 // indirect
-	golang.org/x/crypto v0.47.0 // indirect
+	golang.org/x/crypto v0.48.0 // indirect
 	golang.org/x/mod v0.33.0 // indirect
 	golang.org/x/sync v0.20.0 // indirect
-	golang.org/x/sys v0.40.0 // indirect
-	golang.org/x/text v0.33.0 // indirect
-	golang.org/x/tools v0.41.0 // indirect
+	golang.org/x/sys v0.41.0 // indirect
+	golang.org/x/text v0.34.0 // indirect
+	golang.org/x/tools v0.42.0 // indirect
 )
