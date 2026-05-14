@@ -16,10 +16,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/checkout@v4
+        with:
+          repository: mockzilla/actions
+          path: .mockzilla-actions
+
       - name: Install mockzilla
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          brew tap mockzilla/tap
-          brew install mockzilla
+          source .mockzilla-actions/shared/functions.sh
+          install_mockzilla
+          echo "/tmp" >> "$GITHUB_PATH"
 
       - name: Pack
         run: |
