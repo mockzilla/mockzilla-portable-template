@@ -1,0 +1,16 @@
+# Per-service knobs. Each service folder has its own.
+#
+# latency: 100ms              # constant latency for every endpoint
+# latencies:                  # OR percentile latencies
+#   p50: 50ms
+#   p95: 200ms
+# errors:                     # percentile error injection
+#   p5: 500                   # 5% of requests → 500
+# mount: pets/v2              # override URL prefix (default: <service-folder-name>)
+# upstream:                   # forward to a real backend
+#   url: https://petstore3.swagger.io/api/v3
+#   timeout: 10s
+# cache:
+#   requests: true            # cache GET responses
+
+latency: 0ms

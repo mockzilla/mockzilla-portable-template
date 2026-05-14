@@ -5,60 +5,27 @@ on:
     branches: [main, master]
 
 env:
-  BINARY_NAME: ${{ github.event.repository.name }}
+  ARCHIVE_NAME: ${{ github.event.repository.name }}.mockz
 
 permissions:
   contents: write
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - goos: linux
-            goarch: amd64
-          - goos: linux
-            goarch: arm64
-          - goos: darwin
-            goarch: amd64
-          - goos: darwin
-            goarch: arm64
-          - goos: windows
-            goarch: amd64
-          - goos: windows
-            goarch: arm64
-
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: go.mod
-
-      - name: Build
-        env:
-          GOOS: ${{ matrix.goos }}
-          GOARCH: ${{ matrix.goarch }}
+      - name: Install mockzilla
         run: |
-          ext=""
-          if [ "$GOOS" = "windows" ]; then ext=".exe"; fi
-          VERSION="${GITHUB_SHA::7}"
-          go build -ldflags "-X main.version=${VERSION}" -o ${BINARY_NAME}-${GOOS}-${GOARCH}${ext} .
+          brew tap mockzilla/tap
+          brew install mockzilla
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.BINARY_NAME }}-${{ matrix.goos }}-${{ matrix.goarch }}
-          path: ${{ env.BINARY_NAME }}-*
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          path: artifacts
-          merge-multiple: true
+      - name: Pack
+        run: |
+          mockzilla pack . \
+            --name "${{ github.event.repository.name }}" \
+            --output "${{ env.ARCHIVE_NAME }}"
 
       - name: Delete existing latest release
         env:
@@ -71,7 +38,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
-          gh release create latest artifacts/* \
-            --title "Latest build" \
-            --notes "Built from $(echo ${GITHUB_SHA} | cut -c1-7)" \
+          gh release create latest "${{ env.ARCHIVE_NAME }}" \
+            --title "Latest" \
+            --notes "Packed from $(echo ${GITHUB_SHA} | cut -c1-7). Run with: mockzilla ${{ env.ARCHIVE_NAME }}" \
             --latest

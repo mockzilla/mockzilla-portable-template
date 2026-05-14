@@ -1,0 +1,9 @@
+# Replacement values for this service's mock responses.
+# Keys are flat — no service-name wrapper. Used to seed generators
+# inside the OpenAPI factory (e.g. `name`, `tag`).
+#
+# Examples:
+# name: ["Fluffy", "Spot", "Rover"]
+# tag: ["cat", "dog", "bird"]
+
+name: ["Fluffy", "Spot", "Rover", "Bella", "Charlie"]

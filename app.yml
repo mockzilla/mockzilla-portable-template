@@ -1,8 +1,0 @@
-app:
-  port: 2200
-
-services:
-  petstore:
-    latency: 0ms
-    errors:
-      "5": 500
