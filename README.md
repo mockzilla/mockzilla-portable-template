@@ -1,16 +1,21 @@
 # Mockzilla Portable Template
 
-A template for declaring mock API services and publishing them to [Mockzilla](https://github.com/mockzilla/mockzilla).
+An open-source API mock server template built with [Mockzilla](https://mockzilla.org/).
 
-Drop each service into `services/<name>/`, push, and get both a hosted simulation and a downloadable `.mockz` package you can run locally.
+Source engine: [github.com/mockzilla/mockzilla](https://github.com/mockzilla/mockzilla)
+Website: [mockzilla.org](https://mockzilla.org/)
+
+Drop your OpenAPI specs into `services/<name>/`, push to main, and get a hosted simulation URL and a portable `.mockz` binary you can run anywhere. No code, no configuration, no separate infrastructure.
 
 ## Quick start
 
 1. Click [**Use this template**](https://github.com/mockzilla/mockzilla-portable-template/generate) to create your own repository.
 2. Add your services under `services/<name>/` (see layout below).
 3. Push to main. The included GitHub Actions:
-   - Publish your specs to a hosted simulation at `https://api.mockz.io/gh/<org>/<repo>/`.
+   - Publish your specs to a hosted simulation at `https://api.mockzilla.org/gh/<org>/<repo>/`.
    - Pack a `.mockz` archive and attach it to the latest GitHub release for offline use.
+
+This repo uses the [Mockzilla engine](https://github.com/mockzilla/mockzilla) to serve realistic responses from OpenAPI specs.
 
 ## Layout
 
@@ -112,7 +117,7 @@ Every push to main/master packs your service tree into a `.mockz`
 archive (a gzipped tarball with a `.mockzilla.json` manifest declaring
 the contained services) and publishes it to the `latest` release.
 
-Run it locally with the mockzilla CLI:
+Run it locally with the Mockzilla CLI:
 
 ```bash
 brew tap mockzilla/tap
@@ -198,5 +203,9 @@ Trigger it manually from the **Actions** tab when you're ready.
 After pushing, your URL is deterministic:
 
 ```bash
-echo "https://api.mockz.io/gh/$(gh repo view --json nameWithOwner -q .nameWithOwner)/$(git branch --show-current)/"
+echo "https://api.mockzilla.org/gh/$(gh repo view --json nameWithOwner -q .nameWithOwner)/$(git branch --show-current)/"
 ```
+
+## Disclaimer
+
+This project is not affiliated with or endorsed by any of the API providers whose specifications may be used as examples.
