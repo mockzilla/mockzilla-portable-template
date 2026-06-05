@@ -155,8 +155,6 @@ You can customize the action in `.github/workflows/mockzilla.yml`:
   with:
     token: ${{ secrets.GITHUB_TOKEN }}
     region: us-east-1        # optional. Preferred AWS region, used as a hint on first deploy only.
-    memory-size: 256         # optional. Memory in MB (default: 128).
-    timeout: 60              # optional. Request timeout in seconds.
     environment: '{"ENV":"production","DEBUG":"true"}'  # optional
     host: api.mockzilla.net  # optional. API host for the simulation URL.
     services-dir: services   # optional. Directory with per-service folders (default: 'services').
@@ -168,8 +166,6 @@ You can customize the action in `.github/workflows/mockzilla.yml`:
 |---|---|---|
 | `token` | yes | `GITHUB_TOKEN`, used to verify repo identity. |
 | `region` | no | Preferred AWS region (e.g. `us-east-1`, `ap-southeast-1`). Used as a hint on first deploy. If at capacity, the nearest available region is used. Has no effect after the simulation is deployed. |
-| `memory-size` | no | Memory in megabytes (e.g. `128`, `256`, `512`). Defaults to `128`. |
-| `timeout` | no | Request timeout for the simulation in seconds (e.g. `30`, `60`). |
 | `environment` | no | JSON object of environment variables to set in the simulation (e.g. `'{"ENV":"production"}'`). |
 | `host` | no | API host for the simulation URL (`api.mockzilla.org`, `api.mockzilla.de`, or `api.mockzilla.net`). Defaults to org setting or `api.mockzilla.org`. |
 | `services-dir` | no | Directory containing per-service folders. Defaults to `services`. |
