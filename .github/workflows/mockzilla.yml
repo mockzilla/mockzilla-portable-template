@@ -19,6 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: mockzilla/actions/portable@v1
+      - uses: mockzilla/actions@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}

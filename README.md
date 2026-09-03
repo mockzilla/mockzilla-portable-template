@@ -151,7 +151,7 @@ Your simulation will be available at:
 You can customize the action in `.github/workflows/mockzilla.yml`:
 
 ```yaml
-- uses: mockzilla/actions/portable@v1
+- uses: mockzilla/actions@v1
   with:
     token: ${{ secrets.GITHUB_TOKEN }}
     region: us-east-1        # optional. Preferred AWS region, used as a hint on first deploy only.
@@ -186,7 +186,7 @@ jobs:
   remove:
     runs-on: ubuntu-latest
     steps:
-      - uses: mockzilla/actions/portable@v1
+      - uses: mockzilla/actions@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           delete: true
