@@ -139,8 +139,21 @@ The included GitHub Actions workflow (`.github/workflows/mockzilla.yml`) publish
 
 - **Push to main/master**: publishes the latest specs to your main simulation
 - **Pull request with `Mockzilla` label**: deploys a preview simulation for the PR (torn down when the PR is closed)
+- **Run by hand**: takes the mocks down and frees your simulation slot
 
 The `Mockzilla` label is created automatically on first push via the setup workflow.
+
+To take the mocks down, run the workflow manually with **delete** ticked, under
+Actions → Mockzilla → Run workflow, or:
+
+```bash
+gh workflow run mockzilla.yml -f delete=true
+```
+
+The action removes a repository's mocks only on a run with `delete: true`, and
+push and pull request triggers cannot pass an input, which is what the
+`workflow_dispatch` trigger is there for. Handy on the free plan, where one
+repository occupies the single slot.
 
 Your simulation will be available at:
 - `https://api.mockzilla.org/gh/{org}/{repo}/`: main branch

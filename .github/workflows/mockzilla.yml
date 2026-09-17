@@ -5,6 +5,17 @@ on:
     branches: [main, master]
   pull_request:
     types: [labeled, synchronize, reopened, closed]
+  # Start this workflow by hand to take the mocks down. The action only
+  # removes a repository's mocks on a run with `delete: true`, and push
+  # and pull_request cannot supply an input, so without this trigger
+  # there is no way to free the simulation slot short of editing the
+  # workflow, pushing, and editing it back.
+  workflow_dispatch:
+    inputs:
+      delete:
+        description: Remove this repository's mocks instead of publishing them
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -15,6 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     if: >-
       github.event_name == 'push' ||
+      github.event_name == 'workflow_dispatch' ||
       contains(github.event.pull_request.labels.*.name, 'Mockzilla')
     steps:
       - uses: actions/checkout@v7
@@ -22,3 +34,6 @@ jobs:
       - uses: mockzilla/actions@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          # false on every push and pull request; true only on a manual
+          # run with the box ticked.
+          delete: ${{ inputs.delete || false }}
