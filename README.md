@@ -133,6 +133,38 @@ To inspect what's inside before running:
 mockzilla info mocks.mockz
 ```
 
+## Keeping dependencies current
+
+Nothing here updates your Go modules or your actions. Pick one:
+
+- Install [Renovate](https://github.com/apps/renovate) on your repository. It
+  opens a setup pull request and keeps both current from then on.
+- Or commit a `.github/dependabot.yml`:
+
+  ```yaml
+  version: 2
+  updates:
+    - package-ecosystem: gomod
+      directory: /
+      schedule:
+        interval: weekly
+      groups:
+        go:
+          patterns: ["*"]
+    - package-ecosystem: github-actions
+      directory: /
+      schedule:
+        interval: weekly
+      groups:
+        actions:
+          patterns: ["*"]
+  ```
+
+  The groups are what keep a week of updates to one pull request instead of ten.
+
+GitHub's own alerts for known vulnerabilities are separate, and are a repository
+setting rather than a file.
+
 ## Mockzilla workflow
 
 The included GitHub Actions workflow (`.github/workflows/mockzilla.yml`) publishes your specs to [Mockzilla](https://mockzilla.org) automatically:
