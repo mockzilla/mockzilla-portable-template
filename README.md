@@ -12,7 +12,7 @@ Drop your OpenAPI specs into `services/<name>/`, push to main, and get a hosted 
 1. Click [**Use this template**](https://github.com/mockzilla/mockzilla-portable-template/generate) to create your own repository.
 2. Add your services under `services/<name>/` (see layout below).
 3. Push to main. The included GitHub Actions:
-   - Publish your specs to a hosted simulation at `https://api.mockzilla.org/gh/<org>/<repo>/`.
+   - Publish your specs to a hosted simulation at `https://<label>.api.mockz.io`, where the label is your repo name.
    - Pack a `.mockz` archive and attach it to the latest GitHub release for offline use.
 
 This repo uses the [Mockzilla engine](https://github.com/mockzilla/mockzilla) to serve realistic responses from OpenAPI specs.
@@ -156,8 +156,15 @@ push and pull request triggers cannot pass an input, which is what the
 repository occupies the single slot.
 
 Your simulation will be available at:
-- `https://api.mockzilla.org/gh/{org}/{repo}/`: main branch
-- `https://api.mockzilla.org/gh/{org}/{repo}/pr-{n}/`: per pull request
+- `https://{label}.api.mockz.io`: main branch
+- `https://{label}-pr{n}.api.mockz.io`: per pull request
+- `https://{label}-{branch}.api.mockz.io`: any other branch you add to the workflow's `push` trigger
+
+The label is the repo name as a host name, up to 55 characters, with `-2`, `-3` if
+it is taken. It never ends in `-pr` and digits, which is kept for pull requests. The
+`host` input asks for another before the first deploy. A branch has its name in its
+host, lowercased, with everything but letters and digits removed: `feature/new-api`
+gives `{label}-featurenewapi`. Branches deploy on plans with PR environments.
 
 ### Action inputs
 
@@ -169,7 +176,7 @@ You can customize the action in `.github/workflows/mockzilla.yml`:
     token: ${{ secrets.GITHUB_TOKEN }}
     region: us-east-1        # optional. Preferred AWS region, used as a hint on first deploy only.
     environment: '{"ENV":"production","DEBUG":"true"}'  # optional
-    host: api.mockzilla.net  # optional. API host for the simulation URL.
+    host: mockzilla.net      # optional. A domain, or a label on one (petstore.mockzilla.net).
     services-dir: services   # optional. Directory with per-service folders (default: 'services').
     timeout-minutes: 5       # optional. Max minutes to wait for simulation to become active (default: 5).
     delete: false            # optional. Remove this repository from Mockzilla (default: false).
@@ -180,7 +187,7 @@ You can customize the action in `.github/workflows/mockzilla.yml`:
 | `token` | yes | `GITHUB_TOKEN`, used to verify repo identity. |
 | `region` | no | Preferred AWS region (e.g. `us-east-1`, `ap-southeast-1`). Used as a hint on first deploy. If at capacity, the nearest available region is used. Has no effect after the simulation is deployed. |
 | `environment` | no | JSON object of environment variables to set in the simulation (e.g. `'{"ENV":"production"}'`). |
-| `host` | no | API host for the simulation URL (`api.mockzilla.org`, `api.mockzilla.de`, or `api.mockzilla.net`). Defaults to org setting or `api.mockzilla.org`. |
+| `host` | no | The domain the simulation answers on: `mockz.io`, `mockz.net`, `mockz.org`, `mockzilla.org`, `mockzilla.de` or `mockzilla.net`. Put a label in front to ask for it: `petstore.mockz.io` answers at `https://petstore.api.mockz.io`. Fixed at the first deploy. Defaults to the org setting or `mockz.io`, with the repo name as the label. |
 | `services-dir` | no | Directory containing per-service folders. Defaults to `services`. |
 | `timeout-minutes` | no | Max minutes the action polls for the simulation to become active. Defaults to `5`. |
 | `delete` | no | Remove this repository from Mockzilla. When set to `true`, the action skips publishing and deletes all mock APIs for this repo. Useful on the free plan to free up your slot before connecting a different repository. Defaults to `false`. |
@@ -209,10 +216,12 @@ Trigger it manually from the **Actions** tab when you're ready.
 
 ### Check your simulation URL
 
-After pushing, your URL is deterministic:
+The label is picked on the server, so the host can't be worked out locally. The
+action prints the URL, sets it as its `url` output and posts it on the pull
+request. To read it from the current pull request's comment:
 
 ```bash
-echo "https://api.mockzilla.org/gh/$(gh repo view --json nameWithOwner -q .nameWithOwner)/$(git branch --show-current)/"
+gh pr view --json comments -q '.comments[].body' | grep -o 'simulation live at [^ ]*' | tail -1 | cut -d' ' -f4
 ```
 
 ## Disclaimer
