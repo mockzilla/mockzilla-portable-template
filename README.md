@@ -157,9 +157,10 @@ repository occupies the single slot.
 
 Your simulation will be available at:
 - `https://{label}.api.mockz.io`: main branch
-- `https://{label}--pr-{n}.api.mockz.io`: per pull request
+- `https://{label}-pr{n}.api.mockz.io`: per pull request
 
-The label is the repo name as a host name, with `-2`, `-3` if it is taken. The
+The label is the repo name as a host name, up to 55 characters, with `-2`, `-3` if
+it is taken. It never ends in `-pr` and digits, which is kept for pull requests. The
 `host` input asks for another before the first deploy. The first deploy of a new
 simulation reports its path address, `https://api.mockz.io/gh/{org}/{repo}/`,
 which keeps working; its own host shows from the next deploy on.
