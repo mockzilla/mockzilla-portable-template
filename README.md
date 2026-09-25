@@ -12,7 +12,7 @@ Drop your OpenAPI specs into `services/<name>/`, push to main, and get a hosted 
 1. Click [**Use this template**](https://github.com/mockzilla/mockzilla-portable-template/generate) to create your own repository.
 2. Add your services under `services/<name>/` (see layout below).
 3. Push to main. The included GitHub Actions:
-   - Publish your specs to a hosted simulation at `https://api.mockzilla.org/gh/<org>/<repo>/`.
+   - Publish your specs to a hosted simulation at `https://<label>.api.mockz.io`, where the label is your repo name.
    - Pack a `.mockz` archive and attach it to the latest GitHub release for offline use.
 
 This repo uses the [Mockzilla engine](https://github.com/mockzilla/mockzilla) to serve realistic responses from OpenAPI specs.
@@ -156,8 +156,13 @@ push and pull request triggers cannot pass an input, which is what the
 repository occupies the single slot.
 
 Your simulation will be available at:
-- `https://api.mockzilla.org/gh/{org}/{repo}/`: main branch
-- `https://api.mockzilla.org/gh/{org}/{repo}/pr-{n}/`: per pull request
+- `https://{label}.api.mockz.io`: main branch
+- `https://{label}--pr-{n}.api.mockz.io`: per pull request
+
+The label is the repo name as a host name, with `-2`, `-3` if it is taken. The
+`host` input asks for another before the first deploy. The first deploy of a new
+simulation reports its path address, `https://api.mockz.io/gh/{org}/{repo}/`,
+which keeps working; its own host shows from the next deploy on.
 
 ### Action inputs
 
@@ -169,7 +174,7 @@ You can customize the action in `.github/workflows/mockzilla.yml`:
     token: ${{ secrets.GITHUB_TOKEN }}
     region: us-east-1        # optional. Preferred AWS region, used as a hint on first deploy only.
     environment: '{"ENV":"production","DEBUG":"true"}'  # optional
-    host: api.mockzilla.net  # optional. API host for the simulation URL.
+    host: api.mockzilla.net  # optional. An API host, or a host for the simulation on one (petstore.api.mockz.io).
     services-dir: services   # optional. Directory with per-service folders (default: 'services').
     timeout-minutes: 5       # optional. Max minutes to wait for simulation to become active (default: 5).
     delete: false            # optional. Remove this repository from Mockzilla (default: false).
@@ -180,7 +185,7 @@ You can customize the action in `.github/workflows/mockzilla.yml`:
 | `token` | yes | `GITHUB_TOKEN`, used to verify repo identity. |
 | `region` | no | Preferred AWS region (e.g. `us-east-1`, `ap-southeast-1`). Used as a hint on first deploy. If at capacity, the nearest available region is used. Has no effect after the simulation is deployed. |
 | `environment` | no | JSON object of environment variables to set in the simulation (e.g. `'{"ENV":"production"}'`). |
-| `host` | no | API host for the simulation URL (`api.mockzilla.org`, `api.mockzilla.de`, or `api.mockzilla.net`). Defaults to org setting or `api.mockzilla.org`. |
+| `host` | no | Where the simulation answers: an API host (`api.mockz.io`, `api.mockz.net`, `api.mockz.org`, `api.mockzilla.org`, `api.mockzilla.de` or `api.mockzilla.net`), or a host for the simulation on one of them (`petstore.api.mockz.io`), which asks for that label. Fixed at the first deploy. Defaults to the org setting or `api.mockz.io`, with the repo name as the label. |
 | `services-dir` | no | Directory containing per-service folders. Defaults to `services`. |
 | `timeout-minutes` | no | Max minutes the action polls for the simulation to become active. Defaults to `5`. |
 | `delete` | no | Remove this repository from Mockzilla. When set to `true`, the action skips publishing and deletes all mock APIs for this repo. Useful on the free plan to free up your slot before connecting a different repository. Defaults to `false`. |
@@ -209,10 +214,12 @@ Trigger it manually from the **Actions** tab when you're ready.
 
 ### Check your simulation URL
 
-After pushing, your URL is deterministic:
+The label is picked on the server, so the host can't be worked out locally. The
+action prints the URL, sets it as its `url` output and posts it on the pull
+request. The path address always answers; for the current pull request:
 
 ```bash
-echo "https://api.mockzilla.org/gh/$(gh repo view --json nameWithOwner -q .nameWithOwner)/$(git branch --show-current)/"
+echo "https://api.mockz.io/gh/$(gh repo view --json nameWithOwner -q .nameWithOwner)/pr-$(gh pr view --json number -q .number)/"
 ```
 
 ## Disclaimer
