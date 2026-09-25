@@ -176,7 +176,7 @@ You can customize the action in `.github/workflows/mockzilla.yml`:
     token: ${{ secrets.GITHUB_TOKEN }}
     region: us-east-1        # optional. Preferred AWS region, used as a hint on first deploy only.
     environment: '{"ENV":"production","DEBUG":"true"}'  # optional
-    host: api.mockzilla.net  # optional. An API host, or a host for the simulation on one (petstore.api.mockz.io).
+    host: mockzilla.net      # optional. A domain, or a label on one (petstore.mockzilla.net).
     services-dir: services   # optional. Directory with per-service folders (default: 'services').
     timeout-minutes: 5       # optional. Max minutes to wait for simulation to become active (default: 5).
     delete: false            # optional. Remove this repository from Mockzilla (default: false).
@@ -187,7 +187,7 @@ You can customize the action in `.github/workflows/mockzilla.yml`:
 | `token` | yes | `GITHUB_TOKEN`, used to verify repo identity. |
 | `region` | no | Preferred AWS region (e.g. `us-east-1`, `ap-southeast-1`). Used as a hint on first deploy. If at capacity, the nearest available region is used. Has no effect after the simulation is deployed. |
 | `environment` | no | JSON object of environment variables to set in the simulation (e.g. `'{"ENV":"production"}'`). |
-| `host` | no | Where the simulation answers: an API host (`api.mockz.io`, `api.mockz.net`, `api.mockz.org`, `api.mockzilla.org`, `api.mockzilla.de` or `api.mockzilla.net`), or a host for the simulation on one of them (`petstore.api.mockz.io`), which asks for that label. Fixed at the first deploy. Defaults to the org setting or `api.mockz.io`, with the repo name as the label. |
+| `host` | no | The domain the simulation answers on: `mockz.io`, `mockz.net`, `mockz.org`, `mockzilla.org`, `mockzilla.de` or `mockzilla.net`. Put a label in front to ask for it: `petstore.mockz.io` answers at `https://petstore.api.mockz.io`. Fixed at the first deploy. Defaults to the org setting or `mockz.io`, with the repo name as the label. |
 | `services-dir` | no | Directory containing per-service folders. Defaults to `services`. |
 | `timeout-minutes` | no | Max minutes the action polls for the simulation to become active. Defaults to `5`. |
 | `delete` | no | Remove this repository from Mockzilla. When set to `true`, the action skips publishing and deletes all mock APIs for this repo. Useful on the free plan to free up your slot before connecting a different repository. Defaults to `false`. |
