@@ -158,12 +158,13 @@ repository occupies the single slot.
 Your simulation will be available at:
 - `https://{label}.api.mockz.io`: main branch
 - `https://{label}-pr{n}.api.mockz.io`: per pull request
+- `https://{label}-{branch}.api.mockz.io`: any other branch you add to the workflow's `push` trigger
 
 The label is the repo name as a host name, up to 55 characters, with `-2`, `-3` if
 it is taken. It never ends in `-pr` and digits, which is kept for pull requests. The
-`host` input asks for another before the first deploy. The first deploy of a new
-simulation reports its path address, `https://api.mockz.io/gh/{org}/{repo}/`,
-which keeps working; its own host shows from the next deploy on.
+`host` input asks for another before the first deploy. A branch has its name in its
+host, lowercased, with everything but letters and digits removed: `feature/new-api`
+gives `{label}-featurenewapi`. Branches deploy on plans with PR environments.
 
 ### Action inputs
 
@@ -217,10 +218,10 @@ Trigger it manually from the **Actions** tab when you're ready.
 
 The label is picked on the server, so the host can't be worked out locally. The
 action prints the URL, sets it as its `url` output and posts it on the pull
-request. The path address always answers; for the current pull request:
+request. To read it from the current pull request's comment:
 
 ```bash
-echo "https://api.mockz.io/gh/$(gh repo view --json nameWithOwner -q .nameWithOwner)/pr-$(gh pr view --json number -q .number)/"
+gh pr view --json comments -q '.comments[].body' | grep -o 'simulation live at [^ ]*' | tail -1 | cut -d' ' -f4
 ```
 
 ## Disclaimer
